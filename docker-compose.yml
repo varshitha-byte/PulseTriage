@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: pulsetriage-db
+    environment:
+      POSTGRES_DB: pulsetriage
+      POSTGRES_USER: pt_admin
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-pulsetriage_secret}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pt_admin -d pulsetriage"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: pulsetriage-api
+    environment:
+      DATABASE_URL: postgres://pt_admin:${DB_PASSWORD:-pulsetriage_secret}@postgres:5432/pulsetriage
+      JWT_SECRET: ${JWT_SECRET:-super_secret_jwt_pulse_key_2026}
+      PORT: 3001
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: pulsetriage-client
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:3001
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  pgdata:
