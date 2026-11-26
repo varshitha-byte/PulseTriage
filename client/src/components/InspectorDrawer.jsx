@@ -115,7 +115,7 @@ export function InspectorDrawer({ isOpen, onClose, selectedAdmissionId }) {
               DBMS Inspector & Academic Lab Panel
             </h2>
             <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-              CS302 / AD302 Modules 2, 4, 5, 6, 7 Verification Workbench
+              CS302 / AD302 DBMS Verification Workbench
             </div>
           </div>
         </div>
@@ -133,10 +133,10 @@ export function InspectorDrawer({ isOpen, onClose, selectedAdmissionId }) {
         padding: '0 1rem'
       }}>
         {[
-          { key: 'schema', label: 'Schema & BCNF (M2, M4)', icon: Layers },
-          { key: 'concurrency', label: 'Concurrency 2PL (M5)', icon: GitCompare },
-          { key: 'audit', label: 'Temporal Audit (M7)', icon: History },
-          { key: 'explain', label: 'EXPLAIN Plan (M6)', icon: Zap }
+          { key: 'schema', label: 'Schema & BCNF', icon: Layers },
+          { key: 'concurrency', label: 'Concurrency 2PL', icon: GitCompare },
+          { key: 'audit', label: 'Temporal Audit', icon: History },
+          { key: 'explain', label: 'EXPLAIN Plan', icon: Zap }
         ].map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.key;
@@ -273,7 +273,7 @@ export function InspectorDrawer({ isOpen, onClose, selectedAdmissionId }) {
               border: '1px solid var(--border-subtle)'
             }}>
               <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#F8FAFC', marginBottom: '0.4rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <GitCompare size={16} color="#F59E0B" /> Concurrency Control & Precedence Graph (Module 5)
+                <GitCompare size={16} color="#F59E0B" /> Concurrency Control & Precedence Graph
               </h3>
               <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: 1.4, marginBottom: '1rem' }}>
                 Simulate two nurses attempting to allocate the same ICU/Resus bed simultaneously. Observe how Two-Phase Locking (2PL) via <code>SELECT ... FOR UPDATE</code> maintains conflict-serializability.
@@ -435,27 +435,37 @@ export function InspectorDrawer({ isOpen, onClose, selectedAdmissionId }) {
                 <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#F8FAFC', marginBottom: '0.5rem' }}>
                   Audit Diff Inspector (Log #{selectedAuditEntry.audit_id})
                 </h4>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', fontFamily: 'var(--font-mono)', fontSize: '0.7rem' }}>
-                  <div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '0.75rem', width: '100%', fontFamily: 'var(--font-mono)', fontSize: '0.7rem' }}>
+                  <div style={{ minWidth: 0 }}>
                     <div style={{ color: '#EF4444', fontWeight: 700, marginBottom: '2px' }}>OLD VALUES:</div>
                     <pre style={{
                       background: 'rgba(239, 68, 68, 0.05)',
                       padding: '0.5rem',
                       borderRadius: '4px',
                       overflowX: 'auto',
+                      whiteSpace: 'pre-wrap',
+                      overflowWrap: 'anywhere',
+                      wordBreak: 'break-word',
+                      maxWidth: '100%',
+                      margin: 0,
                       border: '1px solid rgba(239, 68, 68, 0.2)'
                     }}>
                       {JSON.stringify(selectedAuditEntry.old_values, null, 2) || 'null (INSERT)'}
                     </pre>
                   </div>
 
-                  <div>
+                  <div style={{ minWidth: 0 }}>
                     <div style={{ color: '#10B981', fontWeight: 700, marginBottom: '2px' }}>NEW VALUES:</div>
                     <pre style={{
                       background: 'rgba(16, 185, 129, 0.05)',
                       padding: '0.5rem',
                       borderRadius: '4px',
                       overflowX: 'auto',
+                      whiteSpace: 'pre-wrap',
+                      overflowWrap: 'anywhere',
+                      wordBreak: 'break-word',
+                      maxWidth: '100%',
+                      margin: 0,
                       border: '1px solid rgba(16, 185, 129, 0.2)'
                     }}>
                       {JSON.stringify(selectedAuditEntry.new_values, null, 2) || 'null (DELETE)'}
@@ -477,7 +487,7 @@ export function InspectorDrawer({ isOpen, onClose, selectedAdmissionId }) {
               border: '1px solid var(--border-subtle)'
             }}>
               <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#F8FAFC', marginBottom: '0.4rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Zap size={16} color="#06B6D4" /> Concrete EXPLAIN (ANALYZE, BUFFERS) Benchmark (Module 6)
+                <Zap size={16} color="#06B6D4" /> Concrete EXPLAIN (ANALYZE, BUFFERS) Benchmark
               </h3>
               <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: 1.4, marginBottom: '1rem' }}>
                 Benchmark query on <code>patient_vitals</code> table: Find all vitals for an active admission in the last 7 days ordered by timestamp.
